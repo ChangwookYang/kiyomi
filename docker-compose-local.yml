@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  kiyomi-project-redis:
+    container_name: kiyomi-project-redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: ycw92325/kiyomi-project-redis
+    ports:
+      - "6379:6379"
+  kiyomi-project-database:
+    container_name: kiyomi-project-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: ycw92325/kiyomi-project-database
+    environment:
+      - MARIADB_DATABASE=kiyomi-project
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
